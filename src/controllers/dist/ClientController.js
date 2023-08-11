@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var ClientService_1 = require("../services/ClientService");
+var ClientValidator_1 = require("../validators/ClientValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["CREATE_ANY_CLIENT"]), checkBodyData(ClientValidator_1.createClientSchema), ClientService_1.createClient);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_CLIENT"]), checkBodyData(ClientValidator_1.findClientsSchema), ClientService_1.findClients);
+router.get("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_CLIENT"]), checkBodyData(ClientValidator_1.findClientSchema), ClientService_1.findClient);
+router.patch("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_CLIENT"]), checkBodyData(ClientValidator_1.updateClientSchema), ClientService_1.updateClient);
+router["delete"]("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_CLIENT"]), checkBodyData(ClientValidator_1.deleteClientSchema), ClientService_1.deleteClient);
+module.exports = router;

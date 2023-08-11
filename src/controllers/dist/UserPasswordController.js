@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var UserPasswordService_1 = require("../services/UserPasswordService");
+var UserPasswordValidator_1 = require("../validators/UserPasswordValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization([]), checkPermissions([]), checkBodyData(UserPasswordValidator_1.createUserPasswordSchema), UserPasswordService_1.createUserPassword);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_USER_PASSWORD", "FIND_OWN_USER_PASSWORD"]), checkBodyData(UserPasswordValidator_1.findUserPasswordsSchema), UserPasswordService_1.findUserPasswords);
+router.get("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_USER_PASSWORD", "FIND_OWN_USER_PASSWORD"]), checkBodyData(UserPasswordValidator_1.findUserPasswordSchema), UserPasswordService_1.findUserPassword);
+router.patch("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_USER_PASSWORD", "UPDATE_OWN_USER_PASSWORD"]), checkBodyData(UserPasswordValidator_1.updateUserPasswordSchema), UserPasswordService_1.updateUserPassword);
+router["delete"]("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_USER_PASSWORD", "DELETE_OWN_USER_PASSWORD"]), checkBodyData(UserPasswordValidator_1.deleteUserPasswordSchema), UserPasswordService_1.deleteUserPassword);
+module.exports = router;

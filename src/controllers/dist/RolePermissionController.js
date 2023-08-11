@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var RolePermissionService_1 = require("../services/RolePermissionService");
+var RolePermissionValidator_1 = require("../validators/RolePermissionValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["CREATE_ANY_ROLE_PERMISSION"]), checkBodyData(RolePermissionValidator_1.createRolePermissionSchema), RolePermissionService_1.createRolePermission);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_ROLE_PERMISSION"]), checkBodyData(RolePermissionValidator_1.findRolePermissionsSchema), RolePermissionService_1.findRolePermissions);
+router.get("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_ROLE_PERMISSION"]), checkBodyData(RolePermissionValidator_1.findRolePermissionSchema), RolePermissionService_1.findRolePermission);
+router.patch("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_ROLE_PERMISSION"]), checkBodyData(RolePermissionValidator_1.updateRolePermissionSchema), RolePermissionService_1.updateRolePermission);
+router["delete"]("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_ROLE_PERMISSION"]), checkBodyData(RolePermissionValidator_1.deleteRolePermissionSchema), RolePermissionService_1.deleteRolePermission);
+module.exports = router;

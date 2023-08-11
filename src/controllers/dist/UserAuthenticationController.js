@@ -1,0 +1,12 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var UserAuthenticationService_1 = require("../services/UserAuthenticationService");
+var UserAuthenticationValidator_1 = require("../validators/UserAuthenticationValidator");
+var router = express_1["default"].Router();
+router.post("/authenticate", checkAuthorization([]), checkPermissions([]), checkBodyData(UserAuthenticationValidator_1.createUserAccessTokenSchema), UserAuthenticationService_1.createUserToken);
+router.post("/refresh", checkAuthorization(["USER_REFRESH_TOKEN"]), checkPermissions([]), checkBodyData(UserAuthenticationValidator_1.refreshUserAccessTokenSchema), showMiddlewareData, UserAuthenticationService_1.refreshUserToken);
+router.post("/introspect", checkAuthorization(["USER_ACCESS_TOKEN", "USER_REFRESH_TOKEN"]), checkPermissions([]), checkBodyData(UserAuthenticationValidator_1.findUserAccessTokenSchema), UserAuthenticationService_1.findUserToken);
+router.post("/revoke", checkAuthorization(["USER_ACCESS_TOKEN", "USER_REFRESH_TOKEN"]), checkPermissions([]), checkBodyData(UserAuthenticationValidator_1.deactivateUserAccessTokenSchema), UserAuthenticationService_1.deactivateUserToken);
+module.exports = router;

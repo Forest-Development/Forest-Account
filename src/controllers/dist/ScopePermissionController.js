@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var ScopePermissionService_1 = require("../services/ScopePermissionService");
+var ScopePermissionValidator_1 = require("../validators/ScopePermissionValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["CREATE_ANY_SCOPE_PERMISSION"]), checkBodyData(ScopePermissionValidator_1.createScopePermissionSchema), ScopePermissionService_1.createScopePermission);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_SCOPE_PERMISSION"]), checkBodyData(ScopePermissionValidator_1.findScopePermissionsSchema), ScopePermissionService_1.findScopePermissions);
+router.get("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_SCOPE_PERMISSION"]), checkBodyData(ScopePermissionValidator_1.findScopePermissionSchema), ScopePermissionService_1.findScopePermission);
+router.patch("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_SCOPE_PERMISSION"]), checkBodyData(ScopePermissionValidator_1.updateScopePermissionSchema), ScopePermissionService_1.updateScopePermission);
+router["delete"]("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_SCOPE_PERMISSION"]), checkBodyData(ScopePermissionValidator_1.deleteScopePermissionSchema), ScopePermissionService_1.deleteScopePermission);
+module.exports = router;

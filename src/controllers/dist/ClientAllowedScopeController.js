@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var ClientAllowedScopeService_1 = require("../services/ClientAllowedScopeService");
+var ClientAllowedScopeValidator_1 = require("../validators/ClientAllowedScopeValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["CREATE_ANY_CLIENT_ALLOWED_SCOPE", "CREATE_OWN_CLIENT_ALLOWED_SCOPE"]), checkBodyData(ClientAllowedScopeValidator_1.createClientAllowedScopeSchema), ClientAllowedScopeService_1.createClientAllowedScope);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_CLIENT_ALLOWED_SCOPE", "FIND_OWN_CLIENT_ALLOWED_SCOPE"]), checkBodyData(ClientAllowedScopeValidator_1.findClientAllowedScopesSchema), ClientAllowedScopeService_1.findClientAllowedScopes);
+router.get("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_CLIENT_ALLOWED_SCOPE", "FIND_OWN_CLIENT_ALLOWED_SCOPE"]), checkBodyData(ClientAllowedScopeValidator_1.findClientAllowedScopeSchema), ClientAllowedScopeService_1.findClientAllowedScope);
+router.patch("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_CLIENT_ALLOWED_SCOPE", "UPDATE_OWN_CLIENT_ALLOWED_SCOPE"]), checkBodyData(ClientAllowedScopeValidator_1.updateClientAllowedScopeSchema), ClientAllowedScopeService_1.updateClientAllowedScope);
+router["delete"]("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_CLIENT_ALLOWED_SCOPE", "DELETE_OWN_CLIENT_ALLOWED_SCOPE"]), checkBodyData(ClientAllowedScopeValidator_1.deleteClientAllowedScopeSchema), ClientAllowedScopeService_1.deleteClientAllowedScope);
+module.exports = router;

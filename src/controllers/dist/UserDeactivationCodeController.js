@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var UserDeactivationCodeService_1 = require("../services/UserDeactivationCodeService");
+var UserDeactivationCodeValidator_1 = require("../validators/UserDeactivationCodeValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["CREATE_ANY_USER_DEACTIVATION_CODE", "CREATE_OWN_USER_DEACTIVATION_CODE"]), checkBodyData(UserDeactivationCodeValidator_1.createUserDeactivationCodeSchema), UserDeactivationCodeService_1.createUserDeactivationCode);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_USER_DEACTIVATION_CODE", "FIND_OWN_USER_DEACTIVATION_CODE"]), checkBodyData(UserDeactivationCodeValidator_1.findUserDeactivationCodesSchema), UserDeactivationCodeService_1.findUserDeactivationCodes);
+router.get("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_USER_DEACTIVATION_CODE", "FIND_OWN_USER_DEACTIVATION_CODE"]), checkBodyData(UserDeactivationCodeValidator_1.findUserDeactivationCodeSchema), UserDeactivationCodeService_1.findUserDeactivationCode);
+router.patch("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_USER_DEACTIVATION_CODE", "UPDATE_OWN_USER_DEACTIVATION_CODE"]), checkBodyData(UserDeactivationCodeValidator_1.updateUserDeactivationCodeSchema), UserDeactivationCodeService_1.updateUserDeactivationCode);
+router["delete"]("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_USER_DEACTIVATION_CODE", "DELETE_OWN_USER_DEACTIVATION_CODE"]), checkBodyData(UserDeactivationCodeValidator_1.deleteUserDeactivationCodeSchema), UserDeactivationCodeService_1.deleteUserDeactivationCode);
+module.exports = router;

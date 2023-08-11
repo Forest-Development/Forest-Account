@@ -1,0 +1,15 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var UserService_1 = require("../services/UserService");
+var UserValidator_1 = require("../validators/UserValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization([]), checkPermissions([]), checkBodyData(UserValidator_1.createUserSchema), UserService_1.createUser);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_USER", "FIND_OWN_USER"]), checkBodyData(UserValidator_1.findUsersSchema), showMiddlewareData, UserService_1.findUsers);
+router.get("/:uid", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), showMiddlewareData, checkPermissions(["FIND_ANY_USER", "FIND_OWN_USER"]), showMiddlewareData, checkUserId, showMiddlewareData, checkBodyData(UserValidator_1.findUserSchema), showMiddlewareData, UserService_1.findUser);
+router.patch("/:uid", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_USER", "UPDATE_OWN_USER"]), checkUserId, checkBodyData(UserValidator_1.updateUserSchema), UserService_1.updateUser);
+router["delete"]("/:uid", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_USER", "DELETE_OWN_USER"]), checkUserId, checkBodyData(UserValidator_1.deleteUserSchema), UserService_1.deleteUser);
+router.post("/:uid/deactive", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DEACTIVE_ANY_USER", "DEACTIVE_OWN_USER"]), checkUserId, checkBodyData(UserValidator_1.deactiveUserSchema), UserService_1.deactiveUser);
+router.post("/:uid/verify", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["VERIFY_ANY_USER", "VERIFY_OWN_USER"]), checkUserId, checkBodyData(UserValidator_1.verifyUserSchema), UserService_1.verifyUser);
+module.exports = router;

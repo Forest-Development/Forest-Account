@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+var express_1 = require("express");
+var _a = require("../middlewares/CheckMiddleware"), checkAuthorization = _a.checkAuthorization, checkPermissions = _a.checkPermissions, checkUserId = _a.checkUserId, checkBodyData = _a.checkBodyData, showMiddlewareData = _a.showMiddlewareData;
+var ClientScopeService_1 = require("../services/ClientScopeService");
+var ClientScopeValidator_1 = require("../validators/ClientScopeValidator");
+var router = express_1["default"].Router();
+router.post("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["CREATE_ANY_CLIENT_SCOPE"]), checkBodyData(ClientScopeValidator_1.createClientScopeSchema), ClientScopeService_1.createClientScope);
+router.get("/", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_CLIENT_SCOPE"]), checkBodyData(ClientScopeValidator_1.findClientScopesSchema), ClientScopeService_1.findClientScopes);
+router.get("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["FIND_ANY_CLIENT_SCOPE"]), checkBodyData(ClientScopeValidator_1.findClientScopeSchema), ClientScopeService_1.findClientScope);
+router.patch("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["UPDATE_ANY_CLIENT_SCOPE"]), checkBodyData(ClientScopeValidator_1.updateClientScopeSchema), ClientScopeService_1.updateClientScope);
+router["delete"]("/:id", checkAuthorization(["CLIENT_ACCESS_TOKEN"]), checkPermissions(["DELETE_ANY_CLIENT_SCOPE"]), checkBodyData(ClientScopeValidator_1.deleteClientScopeSchema), ClientScopeService_1.deleteClientScope);
+module.exports = router;
